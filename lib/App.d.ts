@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Reducer, Store } from 'redux';
 import { HooksInterface } from "./Hooks";
 import { ModelInterface } from "./Model";
-import { StateInterface } from "../lib";
 /**
  * 应用状态类型
  */

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {combineReducers, createStore, Reducer, Store} from 'redux';
+import { combineReducers, createStore, Reducer, Store } from 'redux';
 import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
 import { HooksInterface } from "./Hooks";
 import { ModelInterface } from "./Model";
-import {StateInterface} from "../lib";
 
 /**
  * 应用状态类型
