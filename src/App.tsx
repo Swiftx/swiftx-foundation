@@ -1,10 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { createStore, Store } from 'redux';
+import {combineReducers, createStore, Reducer, Store} from 'redux';
 import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
 import { HooksInterface } from "./Hooks";
 import { ModelInterface } from "./Model";
+import {StateInterface} from "../lib";
 
 /**
  * 应用状态类型
@@ -49,14 +50,6 @@ export interface AppInterface{
      */
     initialState(): StateInterface;
 
-    /**
-     * 状态处理方法
-     * @param {StateInterface} state
-     * @param action
-     * @returns {StateInterface}
-     */
-    reducer(state:StateInterface, action : any) : StateInterface;
-
 }
 
 export class App implements AppInterface {
@@ -87,7 +80,7 @@ export class App implements AppInterface {
      */
     protected createStore():Store<StateInterface>{
         return createStore(
-            this.reducer.bind(this),
+            this.buildReducer(),
             this.initialState()
         );
     }
@@ -177,15 +170,15 @@ export class App implements AppInterface {
 
     /**
      * 状态处理方法
-     * @param {StateInterface} state
-     * @param action
-     * @returns {StateInterface}
+     * @returns {Reducer}
      */
-    public reducer(state:StateInterface = {}, action : any) : StateInterface {
-        let newState = Object.assign({}, state);
-        for(let name in this._models)
-            state[name] = this._models[name].getInitState();
-        return newState;
+    protected buildReducer(): Reducer<any> {
+        let reducers : any = {};
+        for(let name in this._models){
+            let model = this._models[name];
+            reducers[name] = model.reducer.bind(model);
+        }
+        return combineReducers(reducers);
     }
 
     /**

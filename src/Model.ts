@@ -1,3 +1,5 @@
+import { Event } from "./Event";
+
 export interface ModelInterface {
 
     /**
@@ -5,6 +7,13 @@ export interface ModelInterface {
      * @returns {any}
      */
     getInitState():any;
+
+    /**
+     * 事件状态处理
+     * @param state
+     * @param action
+     */
+    reducer(state:any, action:Event);
 
 }
 
@@ -15,8 +24,12 @@ export class Model implements ModelInterface {
      * @type {{}}
      * @private
      */
-    protected _state:any = {};
+    protected state:any = {};
 
+    /**
+     * 状态处理
+     * @type {{}}
+     */
     protected reducers = {};
 
     /**
@@ -24,12 +37,17 @@ export class Model implements ModelInterface {
      * @returns {any}
      */
     public getInitState():any {
-        return this._state;
+        return this.state;
     }
 
-
-    public reducer(){
-
+    /**
+     * 事件状态处理
+     * @param state
+     * @param action
+     */
+    public reducer(state:any, action:Event){
+        if(this.reducers[action.type] === undefined) return {};
+        return this.reducers[action.type](state, action);
     }
 
 }
