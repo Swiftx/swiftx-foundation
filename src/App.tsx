@@ -62,7 +62,7 @@ export class App implements AppInterface {
     /**
      * 系统模型对象
      */
-    protected _models : {[index: string]:ModelInterface};
+    protected _models : {[index: string]:ModelInterface} = {};
 
     /**
      * 全局贮存对象
