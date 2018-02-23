@@ -1,8 +1,9 @@
 /// <reference types="react" />
 import * as React from 'react';
-import { Store } from 'redux';
+import { Reducer, Store } from 'redux';
 import { HooksInterface } from "./Hooks";
 import { ModelInterface } from "./Model";
+import { StateInterface } from "../lib";
 /**
  * 应用状态类型
  */
@@ -39,13 +40,6 @@ export interface AppInterface {
      * @returns {StateInterface}
      */
     initialState(): StateInterface;
-    /**
-     * 状态处理方法
-     * @param {StateInterface} state
-     * @param action
-     * @returns {StateInterface}
-     */
-    reducer(state: StateInterface, action: any): StateInterface;
 }
 export declare class App implements AppInterface {
     /**
@@ -117,11 +111,9 @@ export declare class App implements AppInterface {
     onStateChange(): void;
     /**
      * 状态处理方法
-     * @param {StateInterface} state
-     * @param action
-     * @returns {StateInterface}
+     * @returns {Reducer}
      */
-    reducer(state: StateInterface | undefined, action: any): StateInterface;
+    protected buildReducer(): Reducer<any>;
     /**
      * 触发效果处理
      */

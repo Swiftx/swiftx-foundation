@@ -1,9 +1,16 @@
+import { Event } from "./Event";
 export interface ModelInterface {
     /**
      * 生成初始状态
      * @returns {any}
      */
     getInitState(): any;
+    /**
+     * 事件状态处理
+     * @param state
+     * @param action
+     */
+    reducer(state: any, action: Event): any;
 }
 export declare class Model implements ModelInterface {
     /**
@@ -11,12 +18,21 @@ export declare class Model implements ModelInterface {
      * @type {{}}
      * @private
      */
-    protected _state: any;
+    protected state: any;
+    /**
+     * 状态处理
+     * @type {{}}
+     */
     protected reducers: {};
     /**
      * 生成初始状态
      * @returns {any}
      */
     getInitState(): any;
-    reducer(): void;
+    /**
+     * 事件状态处理
+     * @param state
+     * @param action
+     */
+    reducer(state: any, action: Event): any;
 }
