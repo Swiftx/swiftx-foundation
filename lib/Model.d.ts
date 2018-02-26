@@ -11,6 +11,11 @@ export interface ModelInterface {
      * @param action
      */
     reducer(state: any, action: Event): any;
+    /**
+     * 监听器
+     * @returns {any}
+     */
+    watcher(): any;
 }
 export declare class Model implements ModelInterface {
     /**
@@ -25,6 +30,11 @@ export declare class Model implements ModelInterface {
      */
     protected reducers: {};
     /**
+     * 影响处理
+     * @type {{}}
+     */
+    protected effects: {};
+    /**
      * 生成初始状态
      * @returns {any}
      */
@@ -35,4 +45,9 @@ export declare class Model implements ModelInterface {
      * @param action
      */
     reducer(state: any, action: Event): any;
+    /**
+     * 监听器
+     * @returns {any}
+     */
+    watcher(): any;
 }

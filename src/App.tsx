@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { combineReducers, createStore, Reducer, Store } from 'redux';
+import { applyMiddleware, combineReducers, createStore, Reducer, Store } from 'redux';
+import createSagaMiddleware, { SagaMiddleware } from 'redux-saga'
 import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
 import { HooksInterface } from "./Hooks";
@@ -63,6 +64,12 @@ export class App implements AppInterface {
      */
     protected _models : {[index: string]:ModelInterface} = {};
 
+
+    /**
+     * Saga模块
+     */
+    protected _saga : SagaMiddleware<any>;
+
     /**
      * 全局贮存对象
      */
@@ -78,9 +85,11 @@ export class App implements AppInterface {
      * @returns {Store<StateInterface>}
      */
     protected createStore():Store<StateInterface>{
+        this._saga = createSagaMiddleware();
         return createStore(
             this.buildReducer(),
-            this.initialState()
+            this.initialState(),
+            applyMiddleware(this._saga)
         );
     }
 
@@ -90,6 +99,7 @@ export class App implements AppInterface {
      */
     public start(selector:string): void {
         this._store = this.createStore();
+        this._saga.run(this.onEffect.bind(this));
         ReactDOM.render(
             <Provider store={this._store}>
                 <HashRouter>
@@ -156,7 +166,7 @@ export class App implements AppInterface {
     /**
      * 有Action发生时
      */
-    onAction() {
+    public onAction() {
 
     }
 
@@ -183,8 +193,11 @@ export class App implements AppInterface {
     /**
      * 触发效果处理
      */
-    onEffect() {
-
+    public *onEffect() {
+        for(let name in this._models){
+            let model = this._models[name];
+            yield model.watcher();
+        }
     }
 
     /**

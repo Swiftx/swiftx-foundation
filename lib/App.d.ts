@@ -1,6 +1,7 @@
 /// <reference types="react" />
 import * as React from 'react';
 import { Reducer, Store } from 'redux';
+import { SagaMiddleware } from 'redux-saga';
 import { HooksInterface } from "./Hooks";
 import { ModelInterface } from "./Model";
 /**
@@ -51,6 +52,10 @@ export declare class App implements AppInterface {
     protected _models: {
         [index: string]: ModelInterface;
     };
+    /**
+     * Saga模块
+     */
+    protected _saga: SagaMiddleware<any>;
     /**
      * 全局贮存对象
      */
@@ -116,7 +121,7 @@ export declare class App implements AppInterface {
     /**
      * 触发效果处理
      */
-    onEffect(): void;
+    onEffect(): IterableIterator<any>;
     /**
      * 当热部署生效
      */

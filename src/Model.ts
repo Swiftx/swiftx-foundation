@@ -1,4 +1,5 @@
 import { Event } from "./Event";
+import { takeEvery } from "redux-saga/effects";
 
 export interface ModelInterface {
 
@@ -14,6 +15,12 @@ export interface ModelInterface {
      * @param action
      */
     reducer(state:any, action:Event);
+
+    /**
+     * 监听器
+     * @returns {any}
+     */
+    watcher(): any;
 
 }
 
@@ -33,6 +40,12 @@ export class Model implements ModelInterface {
     protected reducers = {};
 
     /**
+     * 影响处理
+     * @type {{}}
+     */
+    protected effects = {};
+
+    /**
      * 生成初始状态
      * @returns {any}
      */
@@ -48,6 +61,15 @@ export class Model implements ModelInterface {
     public reducer(state:any, action:Event){
         if(this.reducers[action.type] === undefined) return {};
         return this.reducers[action.type](state, action);
+    }
+
+    /**
+     * 监听器
+     * @returns {any}
+     */
+    public *watcher(): any {
+        for(let method in this.effects)
+            yield takeEvery(method, this.effects[method]);
     }
 
 }
