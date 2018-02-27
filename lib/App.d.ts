@@ -134,4 +134,9 @@ export declare class App implements AppInterface {
      * 额外的处理方法
      */
     extraEnhancers(): void;
+    /**
+     * 派发事件
+     * @param action
+     */
+    dispatch(action: any): void;
 }

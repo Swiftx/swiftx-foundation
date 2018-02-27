@@ -220,4 +220,12 @@ export class App implements AppInterface {
 
     }
 
+    /**
+     * 派发事件
+     * @param action
+     */
+    public dispatch(action){
+        this._store.dispatch(action);
+    }
+
 }
